@@ -6,7 +6,6 @@ authors = ["ProjectOpenEntry <muno9748@gmail.com>", "muno <muno9748@gmail.com>"]
 repository = "https://github.com/Project-OpenEntry/OpenEntryVM-Bindings/"
 description = "OpenEntry Bindings for extensions"
 homepage = "https://github.com/Project-OpenEntry"
-license-file = "LICENSE"
 license = "MIT"
 
 [dependencies]
