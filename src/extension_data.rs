@@ -13,12 +13,9 @@ impl ExtensionData {
 
     // This can transmute something internally
     pub async unsafe fn set<T>(&self, data: T) {
-        let arc = Arc::into_raw(Arc::new(data));
+        let arc = Arc::into_raw(Arc::new(data)) as usize;
 
-        Arc::increment_strong_count(arc);
-
-        // Do this before .await because raw pointers are neither Send / Sync
-        let arc = arc as usize;
+        Arc::increment_strong_count(arc as *const T);
 
         if let Some(bef) = self.lock().await.insert(EXTENSION_ID.load(Ordering::Relaxed), arc) {
             Arc::decrement_strong_count(bef as *const T);
