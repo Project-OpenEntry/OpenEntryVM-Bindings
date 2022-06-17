@@ -17,7 +17,10 @@ impl ExtensionData {
 
         Arc::increment_strong_count(arc);
 
-        if let Some(bef) = self.lock().await.insert(EXTENSION_ID.load(Ordering::Relaxed), arc as usize) {
+        // Do this before .await because raw pointers are neither Send / Sync
+        let arc = arc as usize;
+
+        if let Some(bef) = self.lock().await.insert(EXTENSION_ID.load(Ordering::Relaxed), arc) {
             Arc::decrement_strong_count(bef as *const T);
         }
     }
